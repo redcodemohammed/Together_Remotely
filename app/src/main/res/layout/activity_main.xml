@@ -21,14 +21,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Host IP Address"
-        android:inputType="textPersonName" />
+        android:hint="@string/host_ip_address"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        android:textColorHint="#757575"
+        android:autofillHints="" />
 
     <Button
         android:id="@+id/add_connection_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:onClick="addConnection"
         android:text="@string/add_connection" />
 
 </LinearLayout>

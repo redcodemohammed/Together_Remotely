@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Together Remotely</string>
     <string name="add_connection">Add New Connection</string>
+    <string name="host_ip_address">Host IP Address</string>
 </resources>
