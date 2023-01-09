@@ -123,20 +123,28 @@
                 android:layout_gravity="center">
 
                 <Button
+                    android:id="@+id/previousButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
-                    android:text="Previous"/>
+                    android:onClick="runMediaCommand"
+                    android:text="Previous" />
+
                 <Button
+                    android:id="@+id/playPauseButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
+                    android:onClick="runMediaCommand"
                     android:text="Play/Pause" />
+
                 <Button
+                    android:id="@+id/nextButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
-                   android:text="Next" />
+                    android:onClick="runMediaCommand"
+                    android:text="Next" />
 
             </TableRow>
             <!-- Sound -->
@@ -152,19 +160,27 @@
                 android:layout_gravity="center">
 
                 <Button
+                    android:id="@+id/lowerButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
-                    android:text="Lower"/>
+                    android:onClick="runSoundCommand"
+                    android:text="Lower" />
+
                 <Button
+                    android:id="@+id/muteButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
+                    android:onClick="runSoundCommand"
                     android:text="Mute/Unmute" />
+
                 <Button
+                    android:id="@+id/raiseButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
+                    android:onClick="runSoundCommand"
                     android:text="Raise" />
             </TableRow>
 
@@ -181,15 +197,50 @@
                 android:layout_gravity="center_horizontal">
 
                 <Button
+                    android:id="@+id/brightnessDownButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
-                    android:text="Lower"/>
+                    android:onClick="runBrightnessCommand"
+                    android:text="Lower" />
+
                 <Button
+                    android:id="@+id/brightnessUpButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
+                    android:onClick="runBrightnessCommand"
                     android:text="Raise" />
+
+            </TableRow>
+
+            <!-- Apps -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_margin="10dp"
+                android:background="@android:color/darker_gray" />
+            <TextView android:text="Control Buttons"></TextView>
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal">
+
+                <Button
+                    android:id="@+id/shutdownButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:onClick="runControlCommand"
+                    android:text="Shutdown" />
+
+                <Button
+                    android:id="@+id/restartButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:onClick="runControlCommand"
+                    android:text="Restart" />
 
             </TableRow>
         </TableLayout>

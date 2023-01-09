@@ -6,7 +6,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
+import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,6 +18,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -57,9 +65,20 @@ public class Homepage extends AppCompatActivity {
 
         // get basic stats from the api
         getBasicStats();
-    }
 
-    private void getBasicStats(){
+        ScheduledExecutorService executor =
+                Executors.newSingleThreadScheduledExecutor();
+
+        Runnable periodicTask = new Runnable() {
+            public void run() {
+                // Invoke method(s) to do the work
+                getBasicStats();
+            }
+        };
+
+        executor.scheduleAtFixedRate(periodicTask, 0, 5, TimeUnit.SECONDS);
+    }
+    private void getBasicStats() {
         Request request = new Request.Builder().url("http://" + ipAddress + ":3000/stats/basic").build();
 
         okHttpClient.newCall(request).enqueue(new Callback() {
@@ -78,34 +97,176 @@ public class Homepage extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     ResponseBody responseBody = response.body();
                     String responseString = responseBody.string();
-                    try {
-                        JSONObject jsonObject = new JSONObject(responseString);
 
-                        // UP time
-                        float upTime = jsonObject.getInt("upTime");
-                        upTimeTextView.setText("Up Time: " + upTime + "min");
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                JSONObject jsonObject = new JSONObject(responseString);
 
-                        // CPU temperature
-                        float temp = jsonObject.getInt("cpuTemperature");
-                        tempTextView.setText("CPU temp: " + temp + "C°");
+                                // UP time
+                                float upTime = jsonObject.getInt("upTime");
+                                upTimeTextView.setText("Up Time: " + upTime + "min");
 
-                        // RAM usage
-                        JSONObject ram = jsonObject.getJSONObject("ram");
-                        double ramUsage =  ((ram.getDouble("used") / ram.getDouble("total")) * 100);
-                        ramProgress.setProgress((int) ramUsage);
-                        ramUsageText.setText("RAM Usage: " + (int) ramUsage + "%");
+                                // CPU temperature
+                                float temp = jsonObject.getInt("cpuTemperature");
+                                tempTextView.setText("CPU temp: " + temp + "C°");
 
-                        // Storage usage
-                        JSONObject storage = jsonObject.getJSONObject("storage");
-                        double storageUsage =  (((storage.getDouble("total") - storage.getDouble("available")) / storage.getDouble("total")) * 100);
-                        storageProgress.setProgress((int) storageUsage);
-                        storageUsageText.setText("Storage Usage: " + (int) storageUsage + "%");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                                // RAM usage
+                                JSONObject ram = jsonObject.getJSONObject("ram");
+                                double ramUsage = ((ram.getDouble("used") / ram.getDouble("total")) * 100);
+                                ramProgress.setProgress((int) ramUsage);
+                                ramUsageText.setText("RAM Usage: " + (int) ramUsage + "%");
+
+                                // Storage usage
+                                JSONObject storage = jsonObject.getJSONObject("storage");
+                                double storageUsage = (((storage.getDouble("total") - storage.getDouble("available")) / storage.getDouble("total")) * 100);
+                                storageProgress.setProgress((int) storageUsage);
+                                storageUsageText.setText("Storage Usage: " + (int) storageUsage + "%");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
 
                 }
             }
         });
+    }
+
+    public void runMediaCommand(View button) {
+        String command;
+
+        switch (button.getId()) {
+            case R.id.playPauseButton: {
+                command = "play-pause";
+                break;
+            }
+            case R.id.previousButton: {
+                command = "previous";
+                break;
+            }
+            case R.id.nextButton: {
+                command = "next";
+                break;
+            }
+            default: {
+                command = "play-pause";
+            }
+        }
+
+        Request request = new Request.Builder().url("http://" + ipAddress + ":3000/commands/media/" + command).build();
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+
+            }
+        });
+
+    }
+
+    public void runSoundCommand(View button) {
+        String command;
+
+        switch (button.getId()) {
+            case R.id.muteButton: {
+                command = "mute";
+                break;
+            }
+            case R.id.lowerButton: {
+                command = "lower";
+                break;
+            }
+            case R.id.raiseButton: {
+                command = "raise";
+                break;
+            }
+            default: {
+                command = "mute";
+            }
+        }
+
+        Request request = new Request.Builder().url("http://" + ipAddress + ":3000/commands/sound/" + command).build();
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+
+            }
+        });
+
+    }
+
+    public void runBrightnessCommand(View button) {
+        String command;
+
+        switch (button.getId()) {
+            case R.id.brightnessUpButton: {
+                command = "raise";
+                break;
+            }
+            case R.id.brightnessDownButton: {
+                command = "lower";
+                break;
+            }
+            default: {
+                command = "raise";
+            }
+        }
+
+        Request request = new Request.Builder().url("http://" + ipAddress + ":3000/commands/brightness/" + command).build();
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+
+            }
+        });
+
+    }
+
+    public void runControlCommand(View button) {
+        String command;
+
+        switch (button.getId()) {
+            case R.id.shutdownButton: {
+                command = "shutdown";
+                break;
+            }
+            case R.id.restartButton: {
+                command = "reboot";
+                break;
+            }
+            default: {
+                command = "shutdown";
+            }
+        }
+
+        Request request = new Request.Builder().url("http://" + ipAddress + ":3000/commands/" + command).build();
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+
+            }
+        });
+
     }
 }
