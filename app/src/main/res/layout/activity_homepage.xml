@@ -19,7 +19,7 @@
             android:layout_weight="1">
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/ramUsageText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Ram Usage"
@@ -50,7 +50,7 @@
             android:layout_weight="1">
 
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/storageUsageText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Storage Usage"
@@ -83,7 +83,7 @@
         android:padding="10dp">
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/upTimeTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -91,7 +91,7 @@
             android:textAlignment="center" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/tempTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

@@ -14,18 +14,20 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="29"
-        android:orientation="vertical"></LinearLayout>
+        android:orientation="vertical"/>
 
     <EditText
         android:id="@+id/edittext_ip"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:autofillHints=""
         android:ems="10"
         android:hint="@string/host_ip_address"
-        android:inputType="textPersonName"
+        android:inputType="text"
+        android:keyboardNavigationCluster="false"
         android:minHeight="48dp"
-        android:textColorHint="#757575"
-        android:autofillHints="" />
+        android:text="192.168.35.221"
+        android:textColorHint="#757575" />
 
     <Button
         android:id="@+id/add_connection_button"
